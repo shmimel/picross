@@ -153,6 +153,7 @@ def main():
     clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
     pix_grid = solve_puzzle(clues)
     drawpuzzle(clues, pix_grid)
+    print('test')
 
 main()
     

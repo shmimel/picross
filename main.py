@@ -1,6 +1,7 @@
 import numpy as np
 import itertools
 
+
 def max_list(list):
     list_len = [len(i) for i in list]
     return max(list_len)
@@ -32,8 +33,8 @@ def drawpuzzle(clues, pix_grid):
                 col_fix.append(col[i])
             else:
                 col_fix.append(' ')
-        col_clues.insert(0,col_fix)
-    
+        col_clues.insert(0, col_fix)
+
     for col_clue in col_clues:
         print(' ' * (x_pad+1), *col_clue)
 
@@ -46,14 +47,13 @@ def drawpuzzle(clues, pix_grid):
             else:
                 ascii_row.append('█')
         ascii_grid.append(ascii_row)
-        
 
     row_clues = []
     for row in rows:
         while len(row) < x_pad:
             row.insert(0, ' ')
         row_clues.append(row)
-    
+
     for i, row_clue in enumerate(row_clues):
         print(*row_clue, *ascii_grid[i])
     
@@ -73,7 +73,8 @@ def draw_grid(pix_grid):
 def create_combos(clue, length):
     num_groups = len(clue)
     num_empty = length - (sum(clue) + (len(clue)-1))
-    combos = list(itertools.combinations(range(num_groups+num_empty), num_groups))
+    combos = list(itertools.combinations(range(num_groups+num_empty),
+                                         num_groups))
 
     pix_combos = []
     for combo in combos:
@@ -84,7 +85,7 @@ def create_combos(clue, length):
             start += 1
         for _ in range(clue[0]):
             pix_line.append(1)
-        for i in range(1,len(combo)):
+        for i in range(1, len(combo)):
             for _ in range(combo[i]-combo[i-1]):
                 pix_line.append(-1)
             for _ in range(clue[i]):
@@ -105,14 +106,14 @@ def mark_known(combos):
         for j in range(len(combos)):
             pix.append(combos[j][i])
         pixs.append(pix)
-    
+
     known = np.zeros(len(combos[0]))
     known = known.astype(int)
 
     for i, pix in enumerate(pixs):
         if pix.count(pix[0]) == len(pix):
             known[i] = pix[0]
-    
+
     return known
 
 
@@ -130,7 +131,7 @@ def cull_combos(combos):
         return culled[1:]
     else:
         return culled
-    
+
 
 def solve_puzzle(clues):
     rows = clues[0]
@@ -147,32 +148,30 @@ def solve_puzzle(clues):
         com = create_combos(col, len(rows))
         col_combos.append(com)
 
-
     while 0 in pix_grid:
         for i, combo in enumerate(row_combos):
-            combo.insert(0,list(pix_grid[i]))
+            combo.insert(0, list(pix_grid[i]))
             pix_line = cull_combos(combo)
             if len(pix_line[0]) > 1:
                 pix_line = mark_known(pix_line)
                 pix_grid[i] = pix_line
 
         for i, combo in enumerate(col_combos):
-            combo.insert(0,list(pix_grid[:, i]))
+            combo.insert(0, list(pix_grid[:, i]))
             pix_line = cull_combos(combo)
             if len(pix_line[0]) > 1:
                 pix_line = mark_known(pix_line)
-                pix_grid[:,i] = pix_line
+                pix_grid[:, i] = pix_line
 
     return pix_grid
-
-    
 
 
 def main():
     # drawpuzzle([[[1,1,1],[5],[3],[1,1],[3]],[[2],[4],[3,1],[4],[2]]])
     # print(create_combos([1,2], 6))
     # print(mark_known([[0,0,0],[1,1,1]]))
-    # print(cull_combos([[1, 1, 0, 0, 0], [1, 1, -1, -1, -1], [1, 1, -1, 1, -1], [-1, 1, 1, -1, -1]]))
+    # print(cull_combos([[1, 1, 0, 0, 0], [1, 1, -1, -1, -1],
+    #                    [1, 1, -1, 1, -1], [-1, 1, 1, -1, -1]]))
     # clues = [[[1,1,1],[5],[3],[1,1],[3]],[[2],[4],[3,1],[4],[2]]]
     # clues = [[[2,1],[1,3],[1,2],[3],[4],[1]],[[1],[5],[2],[5],[2,1],[2]]]
     # clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
@@ -184,9 +183,5 @@ def main():
     pix_grid = solve_puzzle(clues)
     draw_grid(pix_grid)
 
+
 main()
-    
-    
-
-
-

@@ -56,7 +56,20 @@ def drawpuzzle(clues, pix_grid):
     
     for i, row_clue in enumerate(row_clues):
         print(*row_clue, *ascii_grid[i])
-        
+    
+def draw_grid(pix_grid):
+    ascii_grid = []
+    for row in pix_grid:
+        ascii_row = []
+        for pix in row:
+            if pix == 1:
+                ascii_row.append('░')
+            else:
+                ascii_row.append('█')
+        ascii_grid.append(ascii_row)
+    for row in ascii_grid:
+        print(*row)
+
 def create_combos(clue, length):
     num_groups = len(clue)
     num_empty = length - (sum(clue) + (len(clue)-1))
@@ -165,10 +178,11 @@ def main():
     # clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
     # pix_grid = solve_puzzle(clues)
     # drawpuzzle(clues, pix_grid)
-    clues = '1.1.1,5,3,1.1,3/2,4,3.1,4,2'
+    # clues = '1.1.1,5,3,1.1,3/2,4,3.1,4,2'
+    clues = '3,5,4.3,7,5,3,5,1.8,3.3.3,7.3.2,5.4.2,8.2,10,2.3,6/3,4,5,4,5,6,3.2.1,2.2.5,4.2.6,8.2.3,8.2.1.1,2.6.2.1,4.6,2.4,1'
     clues = convert_clues(clues)
     pix_grid = solve_puzzle(clues)
-    drawpuzzle(clues, pix_grid)
+    draw_grid(pix_grid)
 
 main()
     

@@ -5,6 +5,18 @@ def max_list(list):
     list_len = [len(i) for i in list]
     return max(list_len)
 
+def convert_clues(clues):
+    converted = [[],[]]
+    row_col = clues.split('/')
+    for i, item in enumerate(row_col):
+        item = item.split(',')
+        for clue in item:
+            clue = clue.split('.')
+            clue = [int(x) for x in clue]
+            converted[i].append(clue)
+    return converted
+
+
 
 def drawpuzzle(clues, pix_grid):
     rows = clues[0]
@@ -150,7 +162,11 @@ def main():
     # print(cull_combos([[1, 1, 0, 0, 0], [1, 1, -1, -1, -1], [1, 1, -1, 1, -1], [-1, 1, 1, -1, -1]]))
     # clues = [[[1,1,1],[5],[3],[1,1],[3]],[[2],[4],[3,1],[4],[2]]]
     # clues = [[[2,1],[1,3],[1,2],[3],[4],[1]],[[1],[5],[2],[5],[2,1],[2]]]
-    clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
+    # clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
+    # pix_grid = solve_puzzle(clues)
+    # drawpuzzle(clues, pix_grid)
+    clues = '1.1.1,5,3,1.1,3/2,4,3.1,4,2'
+    clues = convert_clues(clues)
     pix_grid = solve_puzzle(clues)
     drawpuzzle(clues, pix_grid)
 

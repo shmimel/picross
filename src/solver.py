@@ -68,6 +68,9 @@ def cull_combos(combos):
         return culled
 
 
+def contradiction(pix_grid, clues):
+    
+
 def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
 
     pix_grid = zeros((puzzle.width, puzzle.height))

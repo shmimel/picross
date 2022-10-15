@@ -7,7 +7,7 @@ def convert_clues(clues):
         item = item.split(',')
         for clue in item:
             clue = clue.split('.')
-            clue = [int(x) for x in clue]
+            clue = tuple(int(x) for x in clue)
             converted[i].append(clue)
     return converted
 

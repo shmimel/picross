@@ -1,5 +1,6 @@
 from numpy import array_equal
-from src.solver import solve_puzzle 
+from src.solver import solve_puzzle
+from src.solver import create_combos
 
 def test_picross():
     clues = [[[2],[1,1],[4],[2,1],[3,1],[8],[8],[7],[5],[3]],[[1],[2],[1,6],[9],[6],[5],[5],[4],[3],[4]]]
@@ -17,3 +18,11 @@ def test_picross():
                         [-1., -1., -1.,  1.,  1.,  1.,  1.,  1., -1., -1.],
                         [-1., -1., -1., -1.,  1.,  1.,  1., -1., -1., -1.]]
     )
+
+def test_create_combos():
+    create_combos([1,2], 5)
+
+def main():
+    test_create_combos()
+
+main()

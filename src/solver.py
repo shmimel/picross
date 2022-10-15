@@ -1,5 +1,6 @@
 from numpy import zeros
 from numpy import ndarray
+import numpy as np
 from itertools import combinations
 from picrosspuzzle import PicrossPuzzle
 
@@ -69,11 +70,30 @@ def cull_combos(combos):
 
 
 def contradiction(pix_grid, clues):
-    
+    return None
+
+
+def fill_pix(pix_grid, row_combos, col_combos):
+    for i, combo in enumerate(row_combos):
+            combo.insert(0,list(pix_grid[i]))
+            pix_line = cull_combos(combo)
+            if len(pix_line[0]) > 1:
+                pix_line = mark_known(pix_line)
+                pix_grid[i] = pix_line
+
+    for i, combo in enumerate(col_combos):
+        combo.insert(0,list(pix_grid[:, i]))
+        pix_line = cull_combos(combo)
+        if len(pix_line[0]) > 1:
+            pix_line = mark_known(pix_line)
+            pix_grid[:,i] = pix_line
+    return pix_grid
+
 
 def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
 
     pix_grid = zeros((puzzle.width, puzzle.height))
+    pix_grid_prev = zeros((puzzle.width, puzzle.height))
 
     row_combos = []
     col_combos = []
@@ -87,20 +107,14 @@ def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
 
     n = 0
     while 0 in pix_grid:
-        for i, combo in enumerate(row_combos):
-            combo.insert(0,list(pix_grid[i]))
-            pix_line = cull_combos(combo)
-            if len(pix_line[0]) > 1:
-                pix_line = mark_known(pix_line)
-                pix_grid[i] = pix_line
-
-        for i, combo in enumerate(col_combos):
-            combo.insert(0,list(pix_grid[:, i]))
-            pix_line = cull_combos(combo)
-            if len(pix_line[0]) > 1:
-                pix_line = mark_known(pix_line)
-                pix_grid[:,i] = pix_line
+        pix_grid = fill_pix(pix_grid, row_combos, col_combos)
+        if np.array_equal(pix_grid, pix_grid_prev):
+            print('fuck')
+            break
+        pix_grid_prev = pix_grid.copy()
         print(n)
         n += 1
+
+        
 
     return pix_grid

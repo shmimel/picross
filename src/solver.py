@@ -3,13 +3,16 @@ from numpy import ndarray
 from itertools import combinations
 from picrosspuzzle import PicrossPuzzle
 
+
 def create_combos(clue, length):
     num_groups = len(clue)
     num_empty = length - (sum(clue) + (len(clue)-1))
     combos = list(combinations(range(num_groups+num_empty), num_groups))
 
     pix_combos = []
-    for combo in combos:
+    # pix_combos = zeros((len(length), len(combos)))
+    # print(pix_combos)
+    for i, combo in enumerate(combos):
         start = 0
         pix_line = []
         while combo[0] > start:
@@ -30,6 +33,7 @@ def create_combos(clue, length):
 
     return pix_combos
 
+
 def mark_known(combos):
     pixs = []
     for i, _ in enumerate(combos[0]):
@@ -47,6 +51,7 @@ def mark_known(combos):
     
     return known
 
+
 def cull_combos(combos):
     for i, _ in enumerate(combos[0]):
         if combos[0][i] != 0:
@@ -62,6 +67,7 @@ def cull_combos(combos):
     else:
         return culled
 
+
 def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
 
     pix_grid = zeros((puzzle.width, puzzle.height))
@@ -76,6 +82,7 @@ def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
         com = create_combos(col, puzzle.height)
         col_combos.append(com)
 
+    n = 0
     while 0 in pix_grid:
         for i, combo in enumerate(row_combos):
             combo.insert(0,list(pix_grid[i]))
@@ -90,5 +97,7 @@ def solve_puzzle(puzzle: PicrossPuzzle) -> ndarray:
             if len(pix_line[0]) > 1:
                 pix_line = mark_known(pix_line)
                 pix_grid[:,i] = pix_line
+        print(n)
+        n += 1
 
     return pix_grid
